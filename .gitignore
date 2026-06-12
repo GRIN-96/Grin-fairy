@@ -5,6 +5,9 @@ node_modules/
 dist/
 out/
 
+# docs
+docs/
+
 # 로그
 *.log
 npm-debug.log*
