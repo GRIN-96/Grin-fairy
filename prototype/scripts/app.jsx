@@ -1,5 +1,5 @@
 /* ============================================================
-   app.jsx — 퇴근요정 데모 앱
+   app.jsx — Grin-Fairy 데모 앱
    위젯 + 데모 컨트롤(타임 스크러버/상태버튼/실시간) + 설정 창 + Tweaks
    ============================================================ */
 
@@ -192,8 +192,8 @@ function App() {
       <header className="masthead">
         <div className="logo-mark"><PixelCanvas scale={1.7} draw={(ctx) => drawHouse(ctx, { shape: t.houseShape, state: 'closed', accent })} /></div>
         <div>
-          <h1>퇴근요정</h1>
-          <p>데스크탑 한 켠에 사는, 워라밸 확실한 요정</p>
+          <h1>Grin-Fairy</h1>
+          <p>데스크탑 한 켠에 사는, 매덩이 요정</p>
         </div>
       </header>
 

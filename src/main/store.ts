@@ -7,12 +7,15 @@ export interface Schedule {
   leave: number       // default 1080 = 18:00
 }
 
+export type AppSize = 's' | 'm' | 'l'
+
 export interface AppSettings {
   schedule: Schedule
   charId: string
   accent: string
   houseShape: string
   bubbleStyle: string
+  size: AppSize
 }
 
 interface StoreSchema {
@@ -26,6 +29,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   accent: '#C3B1E1',
   houseShape: 'mushroom',
   bubbleStyle: 'rounded',
+  size: 's',
 }
 
 export const store = new Store<StoreSchema>({

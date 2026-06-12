@@ -1,7 +1,7 @@
 {
   "name": "grin-fairy",
   "version": "1.0.0",
-  "description": "퇴근요정 — 워라밸 확실한 데스크탑 요정",
+  "description": "Grin-Fairy — 데스크탑 요정",
   "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",

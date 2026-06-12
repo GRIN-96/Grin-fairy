@@ -5,12 +5,15 @@ export interface Schedule {
   leave: number
 }
 
+export type AppSize = 's' | 'm' | 'l'
+
 export interface AppSettings {
   schedule: Schedule
   charId: string
   accent: string
   houseShape: HouseShape
   bubbleStyle: BubbleStyle
+  size: AppSize
 }
 
 export type Phase =

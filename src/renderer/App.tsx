@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   accent: '#C3B1E1',
   houseShape: 'mushroom',
   bubbleStyle: 'rounded',
+  size: 's',
 }
 
 // 시간 설정 전용 창인지 확인
@@ -76,6 +77,7 @@ export function App() {
         houseShape={settings.houseShape}
         bubbleStyle={settings.bubbleStyle}
         accent={settings.accent}
+        size={settings.size}
       />
     </div>
   )

@@ -2,7 +2,7 @@ import { Configuration } from 'electron-builder'
 
 const config: Configuration = {
   appId: 'com.grinfairy.app',
-  productName: '퇴근요정',
+  productName: 'Grin-Fairy',
   copyright: 'grin',
   directories: {
     buildResources: 'build',

@@ -360,9 +360,11 @@ interface PixelCanvasProps {
   size?: number
   style?: CSSProperties
   className?: string
+  // 히트 테스트(클릭 통과 판정)를 위해 캔버스 엘리먼트를 외부로 노출
+  canvasRef?: (el: HTMLCanvasElement | null) => void
 }
 
-export function PixelCanvas({ draw, scale = 6, size = GRID, style, className }: PixelCanvasProps) {
+export function PixelCanvas({ draw, scale = 6, size = GRID, style, className, canvasRef }: PixelCanvasProps) {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     const cv = ref.current; if (!cv) return
@@ -373,7 +375,7 @@ export function PixelCanvas({ draw, scale = 6, size = GRID, style, className }: 
   })
   return (
     <canvas
-      ref={ref}
+      ref={(el) => { ref.current = el; canvasRef?.(el) }}
       width={size}
       height={size}
       className={className}

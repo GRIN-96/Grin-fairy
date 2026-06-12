@@ -1,4 +1,4 @@
-# 퇴근요정 (Grin Fairy)
+# Grin-Fairy
 
 Electron + TypeScript + React 데스크탑 위젯. 항상 화면 위에 떠있는 요정의 집.
 
