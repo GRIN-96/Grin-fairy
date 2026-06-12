@@ -1,0 +1,29 @@
+{
+  "name": "grin-fairy",
+  "version": "1.0.0",
+  "description": "퇴근요정 — 워라밸 확실한 데스크탑 요정",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build && electron-builder",
+    "build:renderer": "electron-vite build",
+    "preview": "electron-vite preview",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.6"
+  }
+}
