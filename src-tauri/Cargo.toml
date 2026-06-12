@@ -1,0 +1,26 @@
+[package]
+name = "grin-fairy"
+version = "1.0.0"
+description = "퇴근요정 — 워라밸 확실한 데스크탑 요정"
+edition = "2021"
+
+[lib]
+name = "grin_fairy_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-store = "2"
+tauri-plugin-process = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

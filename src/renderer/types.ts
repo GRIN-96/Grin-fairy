@@ -26,21 +26,3 @@ export type Pose = 'idle' | 'talk' | 'annoyed' | 'cheer' | 'eat' | 'countdown' |
 export type HouseState = 'closed' | 'open' | 'off'
 export type HouseShape = 'mushroom' | 'cabin' | 'tent'
 export type BubbleStyle = 'rounded' | 'pixel' | 'sticky'
-
-export interface ElectronAPI {
-  getSettings: () => Promise<AppSettings>
-  saveSettings: (s: AppSettings) => Promise<void>
-  setIgnoreMouseEvents: (ignore: boolean) => void
-  startDrag: (x: number, y: number) => void
-  moveDrag: (x: number, y: number) => void
-  stopDrag: () => void
-  onOpenSettings: (cb: () => void) => () => void
-  showContextMenu: (settings: AppSettings) => void
-  onSettingsUpdate: (cb: (settings: AppSettings) => void) => () => void
-}
-
-declare global {
-  interface Window {
-    electronAPI?: ElectronAPI
-  }
-}

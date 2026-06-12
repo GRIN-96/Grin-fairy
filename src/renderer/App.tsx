@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Widget } from './widget'
 import { TimeSettingsPage } from './settings'
 import { CHARACTERS } from './sprites'
+import * as api from './api'
 import type { AppSettings } from './types'
 import './app.css'
 
@@ -23,16 +24,21 @@ export function App() {
 
   // store에서 설정 로드 — 완료 후 settingsLoaded=true
   useEffect(() => {
-    window.electronAPI?.getSettings().then((s) => {
+    api.getSettings().then((s) => {
       if (s) setSettings(s)
       setSettingsLoaded(true)
     })
   }, [])
 
-  // 컨텍스트 메뉴 직접 변경 수신
+  // 컨텍스트 메뉴·다른 창의 변경 수신
   useEffect(() => {
-    const unsub = window.electronAPI?.onSettingsUpdate((s) => setSettings(s))
-    return () => unsub?.()
+    return api.onSettingsUpdate((s) => setSettings(s))
+  }, [])
+
+  // 메인 창 전용: 이동 시 위치 저장 + 트레이 메뉴(시간 설정) 이벤트
+  useEffect(() => {
+    if (isTimePage) return
+    return api.initMainWindow()
   }, [])
 
   // 실시간 시계
@@ -51,12 +57,12 @@ export function App() {
 
   const handleSaveSettings = useCallback((s: AppSettings) => {
     setSettings(s)
-    window.electronAPI?.saveSettings(s)
+    void api.saveSettings(s)
   }, [])
 
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    window.electronAPI?.showContextMenu(settings)
+    void api.showContextMenu(settings)
   }, [settings])
 
   // 시간 설정 전용 창 — store 로드 완료 후에만 렌더링 (기본값으로 덮어쓰기 방지)

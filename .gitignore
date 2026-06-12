@@ -8,6 +8,11 @@ out/
 # docs
 docs/
 
+# Tauri
+src-tauri/target/
+src-tauri/gen/schemas/
+scripts/icon-source.png
+
 # 로그
 *.log
 npm-debug.log*

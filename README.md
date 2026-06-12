@@ -1,13 +1,17 @@
 # 퇴근요정 (Grin Fairy)
 
-Electron + TypeScript + React 데스크탑 위젯. 항상 화면 위에 떠있는 요정의 집.
+Tauri 2 + TypeScript + React 데스크탑 위젯. 항상 화면 위에 떠있는 요정의 집.
+
+> Electron 버전은 `electron-legacy` 브랜치에 보존되어 있습니다.
 
 ## 실행
 
+요구 사항: Node.js, Rust 툴체인(cargo), Windows의 경우 WebView2(Win11 기본 내장)
+
 ```bash
 npm install
-npm run dev        # 개발 모드 (HMR)
-npm run build      # 패키징 → release/ 폴더
+npm run dev        # 개발 모드 (vite HMR + tauri dev)
+npm run build      # 패키징 → src-tauri/target/release/bundle/
 ```
 
 ## 상태 머신
@@ -25,34 +29,33 @@ npm run build      # 패키징 → release/ 폴더
 ## 구조
 
 ```
-src/
-  main/
-    index.ts       # BrowserWindow, Tray, IPC, PNG 아이콘 생성
-    store.ts       # electron-store (설정 + 위치 영속화)
-  preload/
-    index.ts       # contextBridge IPC 노출
-  renderer/
-    types.ts       # 공유 타입
-    sprites.tsx    # 절차적 픽셀 드로잉 엔진 (집 + 요정 4종)
-    widget.tsx     # 상태머신 + 말풍선 + Widget 컴포넌트
-    settings.tsx   # 설정 모달 (요정 선택 + 시간 피커)
-    App.tsx        # 루트 (실시간 시계, click-through, drag)
-    main.tsx       # React 마운트
-    index.html
-    app.css
+src-tauri/
+  src/lib.rs       # 트레이, 위치 복원, 플러그인 등록 (store/process)
+  tauri.conf.json  # 창 설정 (transparent/alwaysOnTop/skipTaskbar 등)
+  capabilities/    # 렌더러 권한 (드래그, 메뉴, 창 생성, store)
+src/renderer/      # 프론트엔드 (vite root)
+  api.ts           # Tauri 연동 레이어 (구 electronAPI 대체)
+  types.ts         # 공유 타입
+  sprites.tsx      # 절차적 픽셀 드로잉 엔진 (집 + 요정 4종)
+  widget.tsx       # 상태머신 + 말풍선 + Widget 컴포넌트
+  settings.tsx     # 시간 설정 페이지
+  App.tsx          # 루트 (실시간 시계, drag, 컨텍스트 메뉴)
+  main.tsx         # React 마운트
+scripts/
+  gen-icon.mjs     # 버섯집 아이콘 PNG 생성 → npx tauri icon
 prototype/         # 브라우저에서 바로 열 수 있는 HTML 프로토타입
 ```
 
 ## 윈도우
 
-- `280×340`, frameless + transparent + alwaysOnTop + skipTaskbar
-- 드래그: `mousemove` IPC → `win.setPosition()`
-- 투명 영역 클릭 통과: `setIgnoreMouseEvents(true, { forward: true })` + mousemove 판별
-- 마지막 위치 `electron-store`에 저장, 재실행 시 복원
-- 트레이 메뉴: 설정 열기 / 종료
+- `190×225`, frameless + transparent + alwaysOnTop + skipTaskbar
+- 드래그: mousedown 후 3px 이동 시 `startDragging()` (OS 네이티브 드래그)
+- 우클릭: 네이티브 컨텍스트 메뉴 (`@tauri-apps/api/menu`) — 요정/시간/집/말풍선/색상/종료
+- 마지막 위치 `tauri-plugin-store`(store.json)에 저장, Rust setup에서 복원 후 표시
+- 트레이 메뉴: 시간 설정 / 종료
+- 시간 설정은 별도 `WebviewWindow` (`?page=time`)
 
 ## 스택
 
-- Electron 32 + electron-vite + electron-builder
-- React 18 + TypeScript 5
-- electron-store v8
+- Tauri 2 (tray-icon) + tauri-plugin-store + tauri-plugin-process
+- React 18 + TypeScript 5 + Vite 5

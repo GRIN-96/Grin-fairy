@@ -1,0 +1,20 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "퇴근요정 메인 위젯과 시간 설정 창의 기본 권한",
+  "windows": ["main", "time-settings"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-position",
+    "core:window:allow-outer-position",
+    "core:window:allow-scale-factor",
+    "core:window:allow-show",
+    "core:window:allow-set-focus",
+    "core:webview:allow-create-webview-window",
+    "core:menu:allow-new",
+    "core:menu:allow-popup",
+    "store:default",
+    "process:default"
+  ]
+}

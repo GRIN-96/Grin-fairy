@@ -1,6 +1,7 @@
 import { useState, useEffect, CSSProperties } from 'react'
 import { drawFairy, drawHouse, PixelCanvas } from './sprites'
 import type { Character } from './sprites'
+import { startWindowDrag } from './api'
 import type { Phase, HouseShape, BubbleStyle, Schedule } from './types'
 
 const pad2 = (n: number) => String(n).padStart(2, '0')
@@ -187,26 +188,26 @@ export function Widget({ simSec, schedule, character, houseShape, bubbleStyle, a
     }
   }
 
-  // mousedown 하나로 드래그(3px 이상 이동)와 클릭(poke)을 구분
+  // mousedown 하나로 드래그(3px 이상 이동)와 클릭(poke)을 구분.
+  // startDragging() 호출 후엔 OS가 마우스를 가져가므로 그 즉시 리스너를 정리한다.
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.button !== 0) return
     e.preventDefault()
     const startX = e.screenX, startY = e.screenY
-    let didDrag = false
 
-    window.electronAPI?.startDrag(startX, startY)
-
-    const onMove = (ev: MouseEvent) => {
-      if (!didDrag && (Math.abs(ev.screenX - startX) > 3 || Math.abs(ev.screenY - startY) > 3)) {
-        didDrag = true
-      }
-      if (didDrag) window.electronAPI?.moveDrag(ev.screenX, ev.screenY)
-    }
-    const onUp = () => {
-      window.electronAPI?.stopDrag()
-      if (!didDrag) handlePoke()
+    const cleanup = () => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseup', onUp)
+    }
+    const onMove = (ev: MouseEvent) => {
+      if (Math.abs(ev.screenX - startX) > 3 || Math.abs(ev.screenY - startY) > 3) {
+        cleanup()
+        startWindowDrag()
+      }
+    }
+    const onUp = () => {
+      cleanup()
+      handlePoke()
     }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)

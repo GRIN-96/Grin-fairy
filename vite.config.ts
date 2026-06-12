@@ -1,14 +1,16 @@
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin()]
+  root: 'src/renderer',
+  plugins: [react()],
+  clearScreen: false,
+  server: {
+    port: 5173,
+    strictPort: true,
   },
-  preload: {
-    plugins: [externalizeDepsPlugin()]
+  build: {
+    outDir: '../../dist',
+    emptyOutDir: true,
   },
-  renderer: {
-    plugins: [react()]
-  }
 })
